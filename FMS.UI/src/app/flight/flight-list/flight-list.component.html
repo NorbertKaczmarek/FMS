@@ -1,0 +1,100 @@
+<div *ngIf="isLoading" style="text-align: center">
+  <p>Loading...</p>
+</div>
+
+<div class="container justify-content-between p-2">
+  <div class="row mb-3">
+    <div class="col-12 col-md-auto mb-3 mb-md-0">
+      <button class="btn btn-success w-100 w-md-auto" (click)="initNewFlight()">
+        Create New Flight
+      </button>
+    </div>
+    <div class="col-12 col-md d-flex justify-content-end align-items-center">
+      <label for="table-complete-search" class="me-2 mb-0">Full text search:</label>
+      <input
+        id="table-complete-search"
+        type="text"
+        class="form-control w-auto"
+        name="searchTerm"
+        [(ngModel)]="SearchPhrase"
+        (input)="onQueryChange()"
+        placeholder="Enter search term..."
+      />
+    </div>
+  </div>
+</div>
+
+<hr />
+<div class="table-responsive" *ngIf="!isLoading">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th (click)="Sort('NumerLotu')">Numer lotu</th>
+        <th (click)="Sort('DataWylotu')">Data wylotu</th>
+        <th (click)="Sort('DataWylotu')">Czas wylotu</th>
+        <th (click)="Sort('MiejsceWylotu')">Miejsce wylotu</th>
+        <th (click)="Sort('MiejscePrzylotu')">Miejsce przylotu</th>
+        <th (click)="Sort('TypSamolotu')">Typ samolotu</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        app-flight-item
+        *ngFor="let flightEl of flights; let i = index"
+        [flight]="flightEl"
+        (flightToUpdate)="editFlight($event)"
+        [index]="flightEl.id"
+        [routerLink]="[flightEl.id]"
+      ></tr>
+      <tr *ngIf="flights.length == 0">
+        <td colspan="6" style="text-align: center">No flights found</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="container mb-3" *ngIf="FlightResponse">
+  <div class="d-flex justify-content-between align-items-center flex-wrap">
+    <div class="d-flex flex-wrap">
+      <div class="me-2 mb-2">
+        <select
+          class="form-select bg-light"
+          name="PageNumber"
+          [(ngModel)]="PageNumber"
+          (change)="onQueryChange()"
+        >
+          <option *ngFor="let page of totalPagesArray" [ngValue]="page">
+            {{ page }}
+          </option>
+        </select>
+      </div>
+
+      <div class="me-2 mb-2">
+        <select
+          class="form-select bg-light"
+          name="PageSize"
+          [(ngModel)]="PageSize"
+          (change)="onQueryChange()"
+        >
+          <option [ngValue]="5">5 items per page</option>
+          <option [ngValue]="10">10 items per page</option>
+          <option [ngValue]="15">15 items per page</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="d-flex flex-wrap">
+      <div class="me-2 mb-2">
+        <button class="btn btn-light w-100">
+          Total Pages: {{ FlightResponse.totalPages }}
+        </button>
+      </div>
+
+      <div class="mb-2">
+        <button class="btn btn-light w-100">
+          Total Items: {{ FlightResponse.totalItemsCount }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

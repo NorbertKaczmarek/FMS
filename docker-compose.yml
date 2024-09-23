@@ -1,0 +1,16 @@
+services:      
+  db:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'FMS'
+      MYSQL_USER: 'fmsuser'
+      MYSQL_PASSWORD: 'fmspassword'
+      MYSQL_ROOT_PASSWORD: 'fmsrootpassword'
+    ports:
+      - '3307:3306'
+    volumes:
+      - fms-db:/var/lib/fms/mysql
+volumes:
+  fms-db:
+  

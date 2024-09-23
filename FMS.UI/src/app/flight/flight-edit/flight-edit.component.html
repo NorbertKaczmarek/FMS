@@ -1,0 +1,109 @@
+<div *ngIf="flightForm">
+  <div class="row">
+    <div class="col-xs-12">
+      <form [formGroup]="flightForm" (ngSubmit)="onSubmit()">
+        <div class="row d-flex justify-content-between p-2">
+          <div class="col-xs-12 mb-3">
+            <button
+              type="submit"
+              class="btn btn-success"
+              [disabled]="!flightForm.valid"
+            >
+              <span *ngIf="editMode">Save</span>
+              <span *ngIf="!editMode">Create</span>
+            </button>
+            |
+            <button type="button" class="btn btn-danger" (click)="onCancel()">
+              Cancel
+            </button>
+            |
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="onFeedTestData()"
+            >
+              Feed Test Data
+            </button>
+          </div>
+        </div>
+        <hr />
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="alert alert-danger" *ngIf="error">
+              <p>{{ error }}</p>
+            </div>
+            <div class="form-group">
+              <label for="numerLotu">Numer lotu</label>
+              <input
+                type="text"
+                id="numerLotu"
+                formControlName="numerLotu"
+                class="form-control"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="form-group">
+              <label for="dataWylotu">Data wylotu</label>
+              <input type="date"
+                     id="dataWylotu"
+                     formControlName="dataWylotu"
+                     class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="czasWylotu">Godzina wylotu</label>
+              <input type="time"
+                     id="czasWylotu"
+                     formControlName="czasWylotu"
+                     class="form-control">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="form-group">
+              <label for="miejsceWylotu">Miejsce wylotu</label>
+              <input
+                type="text"
+                id="miejsceWylotu"
+                formControlName="miejsceWylotu"
+                class="form-control"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="form-group">
+              <label for="miejscePrzylotu">Miejsce przylotu</label>
+              <input
+                type="text"
+                id="miejscePrzylotu"
+                formControlName="miejscePrzylotu"
+                class="form-control"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="form-group">
+              <label for="typSamolotu">Typ samolotu</label>
+              <select
+                class="form-select"
+                id="typSamolotu"
+                formControlName="typSamolotu"
+              >
+                <option selected value="Embraer">Embraer</option>
+                <option value="Boeing">Boeing</option>
+                <option value="Airbus">Airbus</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
