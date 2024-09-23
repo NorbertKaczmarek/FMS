@@ -10,9 +10,13 @@ API do zarządzania lotami które pozwala przeglądać dodawać aktualizować i 
 
 ## Lokalne środowisko
 
-Po włączeniu obu projektów w VS2022, nawigujemy do `http://localhost:4200/` oraz `http://localhost/swagger`.
-
 W celu włączenia bazy danych należy użyć `docker compose up` z konsoli z folderu z plikami źródłowymi lub zmienić ConnectionString.
+
+Solution -> Build Solution
+
+Project -> Configure Startup Projects -> Multiple startup projects -> FMS.API oraz FMS.UI ustaw na Start
+
+Po włączeniu obu projektów w VS2022, nawigujemy do `http://localhost:4200/` oraz `http://localhost/swagger`.
 
 ## Obiekty
 
