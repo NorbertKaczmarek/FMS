@@ -77,7 +77,7 @@ public class FlightControllerTests : IClassFixture<WebApplicationFactory<Program
     public async Task Delete_ForNonExistingFlight_ReturnsNotFound()
     {
         // act
-        var response = await _client.DeleteAsync("/api/flight/115");
+        var response = await _client.DeleteAsync("/api/flight/463fa856-ffa1-4289-9afd-25256d6ed5c8");
 
         // assert
         response.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);

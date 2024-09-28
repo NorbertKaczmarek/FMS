@@ -64,7 +64,7 @@ public class FlightControllerTestsWithoutAuthentication : IClassFixture<WebAppli
     public async Task Get_ForNonExistingFlight_ReturnsNotFound()
     {
         // act
-        var response = await _client.GetAsync("/api/flight/55");
+        var response = await _client.GetAsync("/api/flight/7dd74765-3bb3-459f-a5b3-33d6c57cacbd");
 
         // assert
         response.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);

@@ -9,10 +9,10 @@ namespace FMS.API.Services;
 public interface IFlightService
 {
     Task<PageResult<Flight>> GetAll(PageQuery query);
-    Flight GetById(int id);
-    int Create(FlightCreateDto dto);
-    void Update(int id, FlightEditDto dto);
-    void Delete(int id);
+    Flight GetById(Guid id);
+    Guid Create(FlightCreateDto dto);
+    void Update(Guid id, FlightEditDto dto);
+    void Delete(Guid id);
 }
 
 public class FlightService : IFlightService
@@ -70,7 +70,7 @@ public class FlightService : IFlightService
         return new PageResult<Flight>(result, totalItemsCount, query.PageSize, query.PageNumber);
     }
 
-    public Flight GetById(int id)
+    public Flight GetById(Guid id)
     {
         var flight = _context
             .Flights
@@ -81,7 +81,7 @@ public class FlightService : IFlightService
         return flight;
     }
 
-    public int Create(FlightCreateDto dto)
+    public Guid Create(FlightCreateDto dto)
     {
         var newFlight = new Flight
         {
@@ -101,7 +101,7 @@ public class FlightService : IFlightService
         return newFlight.Id;
     }
 
-    public void Update(int id, FlightEditDto dto)
+    public void Update(Guid id, FlightEditDto dto)
     {
         var flight = GetById(id);
 
@@ -118,7 +118,7 @@ public class FlightService : IFlightService
         _context.SaveChanges();
     }
 
-    public void Delete(int id)
+    public void Delete(Guid id)
     {
         var flight = GetById(id);
 

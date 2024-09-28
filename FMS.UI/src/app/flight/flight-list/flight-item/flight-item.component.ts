@@ -9,7 +9,7 @@ import { FlightService } from '../../flight.service';
 })
 export class FlightItemComponent {
   @Input() flight: Flight;
-  @Input() index: number;
+  @Input() index: string;
   
   @Output() flightToUpdate = new EventEmitter<Flight>();
 

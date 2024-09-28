@@ -12,7 +12,7 @@ import { Title } from '@angular/platform-browser';
 })
 export class FlightDetailComponent implements OnInit {
   flight?: Flight = null;
-  id: number;
+  id: string;
   error: string = null;
 
   constructor(
@@ -26,7 +26,7 @@ export class FlightDetailComponent implements OnInit {
     this.route.paramMap
       .pipe(
         switchMap((params) => {
-          this.id = Number(params.get('id'));
+          this.id = params.get('id');
           return this.flightService.getFlightById(this.id);
         })
       )
