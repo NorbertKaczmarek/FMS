@@ -11,7 +11,7 @@ import jwt_decode from 'jwt-decode';
 })
 export class AccountComponent implements OnInit {
   user?: User;
-  id: number;
+  id: string;
 
   constructor(private authService: AuthService, private titleService: Title) {}
 
