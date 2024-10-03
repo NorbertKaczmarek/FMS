@@ -19,7 +19,7 @@ W celu włączenia bazy danych należy użyć `docker compose up` z konsoli z fo
 **User** 
 | Parametr        | Typ      | Opis                              |
 | :-------------- | :------- | :-------------------------------- |
-| `Id`            | `int`    | Id obiektu                        |
+| `Id`            | `Guid`   | Id obiektu                        |
 | `Email`         | `string` | Email użytkownika                 |
 | `FullName`      | `string` | Imię i nazwisko użytkownika       |
 | `PasswordHash`  | `string` | Zabezpieczone hasło użytkownika   |
