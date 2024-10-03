@@ -27,7 +27,7 @@ W celu włączenia bazy danych należy użyć `docker compose up` z konsoli z fo
 **Flight** 
 | Parametr          | Typ              | Opis                              |
 | :---------------- | :--------------- | :-------------------------------- |
-| `Id`              | `int`            | Id obiektu                        |
+| `Id`              | `Guid`            | Id obiektu                        |
 | `NumerLotu`       | `int`            | Unikalny numer lotu               |
 | `DataWylotu`      | `DateTimeOffset` | Data wylotu                       |
 | `MiejsceWylotu`   | `string`         | Miejsce wylotu samolotu           |
