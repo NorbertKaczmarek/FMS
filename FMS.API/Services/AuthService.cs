@@ -14,7 +14,7 @@ public interface IAuthService
 {
     void RegisterUser(UserSignupDto dto);
     string LoginUser(UserLoginDto dto);
-    UserDto Account(int id);
+    UserDto Account(Guid id);
 }
 
 public class AuthService : IAuthService
@@ -99,7 +99,7 @@ public class AuthService : IAuthService
         return tokenHandler.WriteToken(token);
     }
 
-    public UserDto Account(int id)
+    public UserDto Account(Guid id)
     {
         var user = _context
             .Users

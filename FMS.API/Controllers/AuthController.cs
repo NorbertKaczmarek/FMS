@@ -39,7 +39,7 @@ public class AuthController : ControllerBase
     {
         ClaimsPrincipal currentUser = this.User;
         var currentUserName = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
-        int.TryParse(currentUserName, out int id);
+        Guid.TryParse(currentUserName, out Guid id);
 
         var response = _authService.Account(id);
         return Ok(response);
