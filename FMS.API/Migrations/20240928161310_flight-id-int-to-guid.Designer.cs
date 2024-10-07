@@ -3,6 +3,7 @@ using System;
 using FMS.API.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FMS.API.Migrations
 {
     [DbContext(typeof(FMSDbContext))]
-    partial class FMSDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240928161310_flight-id-int-to-guid")]
+    partial class flightidinttoguid
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,9 +53,9 @@ namespace FMS.API.Migrations
 
             modelBuilder.Entity("FMS.API.Entities.User", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .HasColumnType("longtext");

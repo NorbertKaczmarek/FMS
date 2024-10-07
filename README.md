@@ -23,7 +23,7 @@ Po włączeniu obu projektów w VS2022, nawigujemy do `http://localhost:4200/` o
 **User** 
 | Parametr        | Typ      | Opis                              |
 | :-------------- | :------- | :-------------------------------- |
-| `Id`            | `int`    | Id obiektu                        |
+| `Id`            | `Guid`   | Id obiektu                        |
 | `Email`         | `string` | Email użytkownika                 |
 | `FullName`      | `string` | Imię i nazwisko użytkownika       |
 | `PasswordHash`  | `string` | Zabezpieczone hasło użytkownika   |
@@ -31,7 +31,7 @@ Po włączeniu obu projektów w VS2022, nawigujemy do `http://localhost:4200/` o
 **Flight** 
 | Parametr          | Typ              | Opis                              |
 | :---------------- | :--------------- | :-------------------------------- |
-| `Id`              | `int`            | Id obiektu                        |
+| `Id`              | `Guid`            | Id obiektu                        |
 | `NumerLotu`       | `int`            | Unikalny numer lotu               |
 | `DataWylotu`      | `DateTimeOffset` | Data wylotu                       |
 | `MiejsceWylotu`   | `string`         | Miejsce wylotu samolotu           |

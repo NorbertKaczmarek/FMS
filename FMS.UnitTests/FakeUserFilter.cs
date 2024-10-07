@@ -17,7 +17,7 @@ public class FakeUserFilter : IAsyncActionFilter
         claimsPrincipal.AddIdentity(new ClaimsIdentity(
             new[]
             {
-                new Claim(ClaimTypes.NameIdentifier, "1"),
+                new Claim(ClaimTypes.NameIdentifier, "389c9463-05d4-4bb9-95c9-ccf0239c21bc"),
                 new Claim(ClaimTypes.Email, "test1@test.com"),
                 new Claim("FullName", "test1"),
             }));

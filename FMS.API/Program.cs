@@ -11,6 +11,12 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
+using NLog.Web;
+using NLog;
+
+// Early init of NLog to allow startup and exception logging, before host is built
+var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+logger.Debug("init main");
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -87,7 +93,14 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<FMSDbContext>
     (options => options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// NLog: Setup NLog for Dependency injection
+builder.Logging.ClearProviders();
+builder.Host.UseNLog();
+
 var app = builder.Build();
+
+// Error Middleware
+app.UseMiddleware<ErrorHandlingMiddleware>();
 
 // migrate database
 var scope = app.Services.CreateScope();
@@ -104,9 +117,6 @@ app.UseSwaggerUI();
 // JWT Authorization and Authentication
 app.UseAuthentication();
 app.UseAuthorization();
-
-// Error Middleware
-app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.MapControllers();
 

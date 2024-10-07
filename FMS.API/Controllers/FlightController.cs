@@ -13,10 +13,13 @@ namespace FMS.API.Controllers;
 public class FlightController : ControllerBase
 {
     private readonly IFlightService _flightService;
+    private readonly ILogger<FlightController> _logger;
 
-    public FlightController(IFlightService flightService)
+    public FlightController(IFlightService flightService, ILogger<FlightController> logger)
     {
         _flightService = flightService;
+        _logger = logger;
+        _logger.LogDebug(1, "NLog injected into FlightController");
     }
 
     /// <summary>
@@ -35,7 +38,7 @@ public class FlightController : ControllerBase
     /// </summary>
     [HttpGet("{id}")]
     [AllowAnonymous]
-    public ActionResult<Flight> GetById([FromRoute] int id)
+    public ActionResult<Flight> GetById([FromRoute] Guid id)
     {
         var flight = _flightService.GetById(id);
         return Ok(flight);
@@ -73,7 +76,7 @@ public class FlightController : ControllerBase
     /// </summary>
     [Authorize]
     [HttpPost("{id}")]
-    public ActionResult Update([FromRoute] int id, [FromBody] FlightEditDto dto)
+    public ActionResult Update([FromRoute] Guid id, [FromBody] FlightEditDto dto)
     {
         _flightService.Update(id, dto);
         return Ok();
@@ -84,7 +87,7 @@ public class FlightController : ControllerBase
     /// </summary>
     [Authorize]
     [HttpDelete("{id}")]
-    public ActionResult Delete([FromRoute] int id)
+    public ActionResult Delete([FromRoute] Guid id)
     {
         _flightService.Delete(id);
         return NoContent();

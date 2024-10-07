@@ -13,7 +13,7 @@ import { HttpResponse } from '@angular/common/http';
   styleUrl: './flight-edit.component.css',
 })
 export class FlightEditComponent {
-  id: number;
+  id: string;
   flight?: Flight = null;
   editMode = false;
   flightForm: FormGroup;
@@ -30,7 +30,7 @@ export class FlightEditComponent {
 
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
-      this.id = +params['id'];
+      this.id = params['id'];
       this.editMode = params['id'] != null;
       this.initForm();
       if (this.editMode) {

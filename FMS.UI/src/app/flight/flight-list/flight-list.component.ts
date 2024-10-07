@@ -16,7 +16,7 @@ export class FlightListComponent implements OnInit {
   SearchPhrase = '';
   PageNumber = 1;
   PageSize = 5;
-  SortBy = 'Id';
+  SortBy = 'NumerLotu';
   SortDirection: SortDirectionEnum = SortDirectionEnum.DESC;
 
   FlightResponse: GetFlightResponse;

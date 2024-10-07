@@ -5,7 +5,7 @@ export enum PlaneType {
 }
 
 export class Flight {
-  public id?: number;
+  public id?: string;
   // public numerLotu: number;
   // public dataWylotu: string; // Date
   // public miejsceWylotu: string;

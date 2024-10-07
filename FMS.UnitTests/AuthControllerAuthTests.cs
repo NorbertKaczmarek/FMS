@@ -41,9 +41,9 @@ public class AuthControllerAuthTests : IClassFixture<WebApplicationFactory<Progr
 
     private void SeedUser(User user)
     {
-        var scopeFactory = _factory.Services.GetService<IServiceScopeFactory>();
+        var scopeFactory = _factory.Services.GetService<IServiceScopeFactory>()!;
         using var scope = scopeFactory.CreateScope();
-        var _dbContext = scope.ServiceProvider.GetService<FMSDbContext>();
+        var _dbContext = scope.ServiceProvider.GetService<FMSDbContext>()!;
 
         _dbContext.Users.Add(user);
         _dbContext.SaveChanges();
@@ -55,11 +55,12 @@ public class AuthControllerAuthTests : IClassFixture<WebApplicationFactory<Progr
     public async Task Get_Endpoints_ReturnSuccessAndCorrectContentType(string url)
     {
         // arrange
+        Guid id = new Guid("389c9463-05d4-4bb9-95c9-ccf0239c21bc");
         string email = "test1@test.com";
         string fullName = "test1";
         string password = "tDest3@!#!123";
 
-        User newUser = new() { Email = email, FullName = fullName };
+        User newUser = new() { Id = id, Email = email, FullName = fullName };
         newUser.PasswordHash = password.HashedPassword(newUser);
         SeedUser(newUser);
 

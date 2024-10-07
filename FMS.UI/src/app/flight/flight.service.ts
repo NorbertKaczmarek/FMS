@@ -45,7 +45,7 @@ export class FlightService {
     return this.http.get<GetFlightResponse>(`${environment.apiUrl}/${this.url}`, {params});
   }
 
-  public getFlightById(id: number): Observable<Flight> {
+  public getFlightById(id: string): Observable<Flight> {
     return this.http.get<Flight>(`${environment.apiUrl}/${this.url}/${id}`);
   }
 
@@ -56,7 +56,7 @@ export class FlightService {
     );
   }
 
-  public updateFlightWithId(id: number, flight: Flight): Observable<Flight[]> {
+  public updateFlightWithId(id: string, flight: Flight): Observable<Flight[]> {
     return this.http
       .post<any>(`${environment.apiUrl}/${this.url}/${id}`, flight)
       .pipe(catchError(this.handleError));

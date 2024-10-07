@@ -26,7 +26,7 @@ public class FlightControllerTestsWithoutAuthentication : IClassFixture<WebAppli
             {
                 builder.ConfigureServices(services =>
                 {
-                    var dbContextOptions = services.SingleOrDefault(service => service.ServiceType == typeof(DbContextOptions<FMSDbContext>));
+                    var dbContextOptions = services.SingleOrDefault(service => service.ServiceType == typeof(DbContextOptions<FMSDbContext>))!;
 
                     services.Remove(dbContextOptions);
 
@@ -39,9 +39,9 @@ public class FlightControllerTestsWithoutAuthentication : IClassFixture<WebAppli
 
     private void SeedFlight(Flight flight)
     {
-        var scopeFactory = _factory.Services.GetService<IServiceScopeFactory>();
+        var scopeFactory = _factory.Services.GetService<IServiceScopeFactory>()!;
         using var scope = scopeFactory.CreateScope();
-        var _dbContext = scope.ServiceProvider.GetService<FMSDbContext>();
+        var _dbContext = scope.ServiceProvider.GetService<FMSDbContext>()!;
 
         _dbContext.Flights.Add(flight);
         _dbContext.SaveChanges();
@@ -64,7 +64,7 @@ public class FlightControllerTestsWithoutAuthentication : IClassFixture<WebAppli
     public async Task Get_ForNonExistingFlight_ReturnsNotFound()
     {
         // act
-        var response = await _client.GetAsync("/api/flight/55");
+        var response = await _client.GetAsync("/api/flight/7dd74765-3bb3-459f-a5b3-33d6c57cacbd");
 
         // assert
         response.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
