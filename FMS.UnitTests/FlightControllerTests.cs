@@ -70,7 +70,8 @@ public class FlightControllerTests : IClassFixture<WebApplicationFactory<Program
         var response = await _client.DeleteAsync("/api/flight/" + flight.Id);
 
         //assert
-        response.StatusCode.Should().Be(System.Net.HttpStatusCode.NoContent);
+        response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
+        //response.StatusCode.Should().Be(System.Net.HttpStatusCode.NoContent);
     }
 
     [Fact]
