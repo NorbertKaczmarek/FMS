@@ -41,9 +41,9 @@ public class AuthControllerAuthTests : IClassFixture<WebApplicationFactory<Progr
 
     private void SeedUser(User user)
     {
-        var scopeFactory = _factory.Services.GetService<IServiceScopeFactory>();
+        var scopeFactory = _factory.Services.GetService<IServiceScopeFactory>()!;
         using var scope = scopeFactory.CreateScope();
-        var _dbContext = scope.ServiceProvider.GetService<FMSDbContext>();
+        var _dbContext = scope.ServiceProvider.GetService<FMSDbContext>()!;
 
         _dbContext.Users.Add(user);
         _dbContext.SaveChanges();

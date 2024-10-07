@@ -26,7 +26,7 @@ public class FlightControllerTestsWithoutAuthentication : IClassFixture<WebAppli
             {
                 builder.ConfigureServices(services =>
                 {
-                    var dbContextOptions = services.SingleOrDefault(service => service.ServiceType == typeof(DbContextOptions<FMSDbContext>));
+                    var dbContextOptions = services.SingleOrDefault(service => service.ServiceType == typeof(DbContextOptions<FMSDbContext>))!;
 
                     services.Remove(dbContextOptions);
 
@@ -39,9 +39,9 @@ public class FlightControllerTestsWithoutAuthentication : IClassFixture<WebAppli
 
     private void SeedFlight(Flight flight)
     {
-        var scopeFactory = _factory.Services.GetService<IServiceScopeFactory>();
+        var scopeFactory = _factory.Services.GetService<IServiceScopeFactory>()!;
         using var scope = scopeFactory.CreateScope();
-        var _dbContext = scope.ServiceProvider.GetService<FMSDbContext>();
+        var _dbContext = scope.ServiceProvider.GetService<FMSDbContext>()!;
 
         _dbContext.Flights.Add(flight);
         _dbContext.SaveChanges();
