@@ -13,10 +13,13 @@ namespace FMS.API.Controllers;
 public class FlightController : ControllerBase
 {
     private readonly IFlightService _flightService;
+    private readonly ILogger<FlightController> _logger;
 
-    public FlightController(IFlightService flightService)
+    public FlightController(IFlightService flightService, ILogger<FlightController> logger)
     {
         _flightService = flightService;
+        _logger = logger;
+        _logger.LogDebug(1, "NLog injected into FlightController");
     }
 
     /// <summary>
