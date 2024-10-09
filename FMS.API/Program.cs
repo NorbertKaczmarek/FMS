@@ -13,6 +13,7 @@ using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using NLog.Web;
 using NLog;
+using FMS.API.Interceptors;
 
 // Early init of NLog to allow startup and exception logging, before host is built
 var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
@@ -85,13 +86,23 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 // Middleware
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
 
+// Interceptors
+builder.Services.AddSingleton<UpdateAuditableEntitiesInterceptor>();
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Database
-builder.Services.AddDbContext<FMSDbContext>
-    (options => options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<FMSDbContext>(
+    (sp, options) =>
+    {
+        var auditableInterceptor = sp.GetService<UpdateAuditableEntitiesInterceptor>();
+
+        options
+            .UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection"))
+            .AddInterceptors(auditableInterceptor);
+    });
 
 // NLog: Setup NLog for Dependency injection
 builder.Logging.ClearProviders();
