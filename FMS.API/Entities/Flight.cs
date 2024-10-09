@@ -9,7 +9,7 @@ public enum PlaneType
     Boeing,
     Airbus
 }
-public class Flight
+public class Flight : IAuditableEntity
 {
     [Required]
     public Guid Id { get; set; }
@@ -29,5 +29,6 @@ public class Flight
     [Required]
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public PlaneType TypSamolotu { get; set; }
-
+    public DateTimeOffset CreatedOnUtc { get; set; }
+    public DateTimeOffset? ModifiedOnUtc { get; set; }
 }
