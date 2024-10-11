@@ -10,10 +10,10 @@ namespace FMS.API.Services;
 public interface IFlightService
 {
     Task<PageResult<FlightDto>> GetAll(PageQuery query);
-    FlightDto GetById(Guid id);
-    Guid Create(FlightCreateDto dto);
-    void Update(Guid id, FlightEditDto dto);
-    void Delete(Guid id);
+    Task<FlightDto> GetById(Guid id);
+    Task<Guid> Create(FlightCreateDto dto);
+    Task Update(Guid id, FlightEditDto dto);
+    Task DeleteAsync(Guid id);
 }
 
 public class FlightService : IFlightService
@@ -75,9 +75,9 @@ public class FlightService : IFlightService
         return new PageResult<FlightDto>(resultMapped, totalItemsCount, query.PageSize, query.PageNumber);
     }
 
-    public FlightDto GetById(Guid id)
+    public async Task<FlightDto> GetById(Guid id)
     {
-        var flight = getById(id);
+        var flight = await getByIdAsync(id);
 
         var result = _mapper.Map<FlightDto>(flight);
 
@@ -95,7 +95,18 @@ public class FlightService : IFlightService
         return flight;
     }
 
-    public Guid Create(FlightCreateDto dto)
+    private async Task<Flight> getByIdAsync(Guid id)
+    {
+        var flight = await _context
+            .Flights
+            .FirstOrDefaultAsync(f => f.Id == id);
+
+        if (flight is null) throw new NotFoundException("Flight not found");
+
+        return flight;
+    }
+
+    public async Task<Guid> Create(FlightCreateDto dto)
     {
         var newFlight = new Flight
         {
@@ -110,16 +121,16 @@ public class FlightService : IFlightService
             .Flights
             .Add(newFlight);
 
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return newFlight.Id;
     }
 
-    public void Update(Guid id, FlightEditDto dto)
+    public async Task Update(Guid id, FlightEditDto dto)
     {
-        var flight = getById(id);
+        var flight = await getByIdAsync(id);
 
-        var NumerLotuInUse = _context.Flights.FirstOrDefault(u => u.NumerLotu == dto.NumerLotu);
+        var NumerLotuInUse = await _context.Flights.FirstOrDefaultAsync(u => u.NumerLotu == dto.NumerLotu);
 
         if (!(NumerLotuInUse == null) && !(NumerLotuInUse.Id == flight.Id)) throw new BadRequestException("NumerLotu already exists.");
 
@@ -129,14 +140,14 @@ public class FlightService : IFlightService
         flight.MiejscePrzylotu = dto.MiejscePrzylotu;
         flight.TypSamolotu = dto.TypSamolotu;
 
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 
-    public void Delete(Guid id)
+    public async Task DeleteAsync(Guid id)
     {
-        var flight = getById(id);
+        var flight = await getByIdAsync(id);
 
         _context.Flights.Remove(flight);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 }

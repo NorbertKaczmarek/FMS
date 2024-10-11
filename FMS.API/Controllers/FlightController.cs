@@ -38,9 +38,9 @@ public class FlightController : ControllerBase
     /// </summary>
     [HttpGet("{id}")]
     [AllowAnonymous]
-    public ActionResult<FlightDto> GetById([FromRoute] Guid id)
+    public async Task<ActionResult<FlightDto>> GetById([FromRoute] Guid id)
     {
-        var flight = _flightService.GetById(id);
+        var flight = await _flightService.GetById(id);
         return Ok(flight);
     }
 
@@ -65,9 +65,9 @@ public class FlightController : ControllerBase
     ///     
     /// </remarks>
     [HttpPost]
-    public ActionResult Create([FromBody] FlightCreateDto dto)
+    public async Task<ActionResult> Create([FromBody] FlightCreateDto dto)
     {
-        var id = _flightService.Create(dto);
+        var id = await _flightService.Create(dto);
         return Created($"/flight/{id}", null);
     }
 
@@ -76,9 +76,9 @@ public class FlightController : ControllerBase
     /// </summary>
     [Authorize]
     [HttpPost("{id}")]
-    public ActionResult Update([FromRoute] Guid id, [FromBody] FlightEditDto dto)
+    public async Task<ActionResult> Update([FromRoute] Guid id, [FromBody] FlightEditDto dto)
     {
-        _flightService.Update(id, dto);
+        await _flightService.Update(id, dto);
         return Ok();
     }
 
@@ -87,9 +87,9 @@ public class FlightController : ControllerBase
     /// </summary>
     [Authorize]
     [HttpDelete("{id}")]
-    public ActionResult Delete([FromRoute] Guid id)
+    public async Task<ActionResult> Delete([FromRoute] Guid id)
     {
-        _flightService.Delete(id);
+        await _flightService.DeleteAsync(id);
         return NoContent();
     }
 }
