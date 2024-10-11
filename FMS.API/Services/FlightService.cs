@@ -117,9 +117,9 @@ public class FlightService : IFlightService
             TypSamolotu = dto.TypSamolotu,
         };
 
-        _context
+        await _context
             .Flights
-            .Add(newFlight);
+            .AddAsync(newFlight);
 
         await _context.SaveChangesAsync();
 
