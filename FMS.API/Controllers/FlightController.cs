@@ -27,7 +27,7 @@ public class FlightController : ControllerBase
     /// </summary>
     [HttpGet]
     [AllowAnonymous]
-    public async Task<ActionResult<IEnumerable<Flight>>> GetAll([FromQuery] PageQuery query)
+    public async Task<ActionResult<IEnumerable<FlightDto>>> GetAll([FromQuery] PageQuery query)
     {
         var flights = await _flightService.GetAll(query);
         return Ok(flights);
@@ -38,7 +38,7 @@ public class FlightController : ControllerBase
     /// </summary>
     [HttpGet("{id}")]
     [AllowAnonymous]
-    public ActionResult<Flight> GetById([FromRoute] Guid id)
+    public ActionResult<FlightDto> GetById([FromRoute] Guid id)
     {
         var flight = _flightService.GetById(id);
         return Ok(flight);

@@ -1,4 +1,5 @@
-﻿using FMS.API.Entities;
+﻿using AutoMapper;
+using FMS.API.Entities;
 using FMS.API.Middleware;
 using FMS.API.Models;
 using Microsoft.EntityFrameworkCore;
@@ -8,8 +9,8 @@ namespace FMS.API.Services;
 
 public interface IFlightService
 {
-    Task<PageResult<Flight>> GetAll(PageQuery query);
-    Flight GetById(Guid id);
+    Task<PageResult<FlightDto>> GetAll(PageQuery query);
+    FlightDto GetById(Guid id);
     Guid Create(FlightCreateDto dto);
     void Update(Guid id, FlightEditDto dto);
     void Delete(Guid id);
@@ -18,14 +19,16 @@ public interface IFlightService
 public class FlightService : IFlightService
 {
     private readonly FMSDbContext _context;
-    public FlightService(FMSDbContext context)
+    private readonly IMapper _mapper;
+
+    public FlightService(FMSDbContext context, IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
 
-    public async Task<PageResult<Flight>> GetAll(PageQuery query)
+    public async Task<PageResult<FlightDto>> GetAll(PageQuery query)
     {
-        //await Console.Out.WriteLineAsync("GetAll");
         var flights = await _context
             .Flights
             .ToListAsync();
@@ -66,11 +69,22 @@ public class FlightService : IFlightService
             .Take(query.PageSize)
             .ToList();
 
+        var resultMapped = _mapper.Map<List<FlightDto>>(flights);
+
         var totalItemsCount = baseQuery.Count();
-        return new PageResult<Flight>(result, totalItemsCount, query.PageSize, query.PageNumber);
+        return new PageResult<FlightDto>(resultMapped, totalItemsCount, query.PageSize, query.PageNumber);
     }
 
-    public Flight GetById(Guid id)
+    public FlightDto GetById(Guid id)
+    {
+        var flight = getById(id);
+
+        var result = _mapper.Map<FlightDto>(flight);
+
+        return result;
+    }
+
+    private Flight getById(Guid id)
     {
         var flight = _context
             .Flights
@@ -103,7 +117,7 @@ public class FlightService : IFlightService
 
     public void Update(Guid id, FlightEditDto dto)
     {
-        var flight = GetById(id);
+        var flight = getById(id);
 
         var NumerLotuInUse = _context.Flights.FirstOrDefault(u => u.NumerLotu == dto.NumerLotu);
 
@@ -120,7 +134,7 @@ public class FlightService : IFlightService
 
     public void Delete(Guid id)
     {
-        var flight = GetById(id);
+        var flight = getById(id);
 
         _context.Flights.Remove(flight);
         _context.SaveChanges();
