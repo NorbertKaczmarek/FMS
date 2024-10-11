@@ -24,7 +24,7 @@ public class AuthControllerAuthTests : IClassFixture<WebApplicationFactory<Progr
             {
                 builder.ConfigureServices(services =>
                 {
-                    var dbContextOptions = services.SingleOrDefault(service => service.ServiceType == typeof(DbContextOptions<FMSDbContext>));
+                    var dbContextOptions = services.SingleOrDefault(service => service.ServiceType == typeof(DbContextOptions<FMSDbContext>))!;
 
                     services.Remove(dbContextOptions);
 

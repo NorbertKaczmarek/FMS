@@ -29,7 +29,7 @@ public class FlightControllerTests : IClassFixture<WebApplicationFactory<Program
                 {
                     var dbContextOptions = services.SingleOrDefault(service => service.ServiceType == typeof(DbContextOptions<FMSDbContext>));
 
-                    services.Remove(dbContextOptions);
+                    services.Remove(dbContextOptions!);
 
                     services.AddSingleton<IPolicyEvaluator, FakePolicyEvaluator>();
 
@@ -43,10 +43,10 @@ public class FlightControllerTests : IClassFixture<WebApplicationFactory<Program
     private void SeedFlight(Flight flight)
     {
         var scopeFactory = _factory.Services.GetService<IServiceScopeFactory>();
-        using var scope = scopeFactory.CreateScope();
+        using var scope = scopeFactory!.CreateScope();
         var _dbContext = scope.ServiceProvider.GetService<FMSDbContext>();
 
-        _dbContext.Flights.Add(flight);
+        _dbContext!.Flights.Add(flight);
         _dbContext.SaveChanges();
     }
 
