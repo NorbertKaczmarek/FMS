@@ -135,6 +135,44 @@ public class FlightControllerTests : IClassFixture<WebApplicationFactory<Program
         response.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
     }
 
+    [Theory]
+    [InlineData(311, "16.04.2024 14:30", "Warszawa", "Gdańsk", PlaneType.Boeing)]
+    [InlineData(322, "23.05.2021 07:10", "Poznań", "Gdańsk", PlaneType.Embraer)]
+    [InlineData(357, "03.08.2023 05:55", "Wrocław", "Toruń", PlaneType.Airbus)]
+    public async Task UpdateFlight_WithValidModel_ReturnsCreatedStatus(
+        int numerLotu, string dataWylotuString, string miejsceWylotu, string miejscePrzylotu, PlaneType typSamolotu)
+    {
+        // arrange
+        var flight = new Flight()
+        {
+            NumerLotu = numerLotu,
+            DataWylotu = DateTime.ParseExact(dataWylotuString, "dd.MM.yyyy HH:mm", System.Globalization.CultureInfo.InvariantCulture),
+            MiejsceWylotu = miejsceWylotu,
+            MiejscePrzylotu = miejscePrzylotu,
+            TypSamolotu = typSamolotu
+        };
+
+        var editedFlight = new FlightEditDto()
+        {
+            NumerLotu = numerLotu + 1,
+            DataWylotu = DateTime.ParseExact(dataWylotuString, "dd.MM.yyyy HH:mm", System.Globalization.CultureInfo.InvariantCulture),
+            MiejsceWylotu = miejscePrzylotu, // reversed
+            MiejscePrzylotu = miejsceWylotu, // reversed
+            TypSamolotu = typSamolotu
+        };
+
+        var httpContent = editedFlight.ToJsonHttpContent();
+
+        // seed
+        SeedFlight(flight);
+
+        // act
+        var response = await _client.PostAsync($"/api/flight/{flight.Id}", httpContent);
+
+        // assert
+        response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
+    }
+
     [Fact]
     public async Task CreateFlight_WithExistingNumber_ReturnsBadRequest()
     {
