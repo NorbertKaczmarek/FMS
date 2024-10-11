@@ -108,14 +108,7 @@ public class FlightService : IFlightService
 
     public async Task<Guid> Create(FlightCreateDto dto)
     {
-        var newFlight = new Flight
-        {
-            NumerLotu = dto.NumerLotu,
-            DataWylotu = dto.DataWylotu,
-            MiejsceWylotu = dto.MiejsceWylotu,
-            MiejscePrzylotu = dto.MiejscePrzylotu,
-            TypSamolotu = dto.TypSamolotu,
-        };
+        var newFlight = _mapper.Map<Flight>(dto);
 
         await _context
             .Flights
@@ -134,11 +127,7 @@ public class FlightService : IFlightService
 
         if (!(NumerLotuInUse == null) && !(NumerLotuInUse.Id == flight.Id)) throw new BadRequestException("NumerLotu already exists.");
 
-        flight.NumerLotu = dto.NumerLotu;
-        flight.DataWylotu = dto.DataWylotu;
-        flight.MiejsceWylotu = dto.MiejsceWylotu;
-        flight.MiejscePrzylotu = dto.MiejscePrzylotu;
-        flight.TypSamolotu = dto.TypSamolotu;
+        _mapper.Map(dto, flight);
 
         await _context.SaveChangesAsync();
     }

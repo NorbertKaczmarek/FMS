@@ -10,5 +10,8 @@ public class AutoMapper : Profile
     {
         CreateMap<User, UserDto>();
         CreateMap<Flight, FlightDto>();
+
+        CreateMap<FlightCreateDto, Flight>();
+        CreateMap<FlightEditDto, Flight>();
     }
 }
