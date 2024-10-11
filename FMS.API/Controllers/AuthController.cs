@@ -23,28 +23,28 @@ public class AuthController : ControllerBase
 
     [HttpPost("signup")]
     [AllowAnonymous]
-    public ActionResult RegisterUser([FromBody] UserSignupDto dto)
+    public async Task<ActionResult> RegisterUser([FromBody] UserSignupDto dto)
     {
-        _authService.RegisterUser(dto);
+        await _authService.RegisterUser(dto);
         return Ok();
     }
 
     [HttpPost("login")]
     [AllowAnonymous]
-    public ActionResult Login([FromBody] UserLoginDto dto)
+    public async Task<ActionResult> Login([FromBody] UserLoginDto dto)
     {
-        string token = _authService.LoginUser(dto);
+        string token = await _authService.LoginUser(dto);
         return Ok(token);
     }
 
     [HttpGet("account")]
-    public ActionResult Account()
+    public async Task<ActionResult> Account()
     {
         ClaimsPrincipal currentUser = this.User;
         var currentUserName = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
         Guid.TryParse(currentUserName, out Guid id);
 
-        var response = _authService.Account(id);
+        var response = await _authService.Account(id);
         return Ok(response);
     }
 }

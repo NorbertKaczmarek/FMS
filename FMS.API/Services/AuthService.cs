@@ -3,6 +3,7 @@ using FMS.API.Entities;
 using FMS.API.Middleware;
 using FMS.API.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -12,9 +13,9 @@ namespace FMS.API.Services;
 
 public interface IAuthService
 {
-    void RegisterUser(UserSignupDto dto);
-    string LoginUser(UserLoginDto dto);
-    UserDto Account(Guid id);
+    Task RegisterUser(UserSignupDto dto);
+    Task<string> LoginUser(UserLoginDto dto);
+    Task<UserDto> Account(Guid id);
 }
 
 public class AuthService : IAuthService
@@ -32,9 +33,9 @@ public class AuthService : IAuthService
         _mapper = mapper;
     }
 
-    public void RegisterUser(UserSignupDto dto)
+    public async Task RegisterUser(UserSignupDto dto)
     {
-        if (getUserByEmail(dto.Email) is not null) throw new BadRequestException("Email already in use.");
+        if (await getUserByEmail(dto.Email) is not null) throw new BadRequestException("Email already in use.");
 
         if (dto.Password != dto.ConfirmPassword)
         {
@@ -51,13 +52,13 @@ public class AuthService : IAuthService
 
         newUser.PasswordHash = hashedPasword;
 
-        _context.Users.Add(newUser);
-        _context.SaveChanges();
+        await _context.Users.AddAsync(newUser);
+        await _context.SaveChangesAsync();
     }
 
-    public string LoginUser(UserLoginDto dto)
+    public async Task<string> LoginUser(UserLoginDto dto)
     {
-        var user = getUserByEmail(dto.Email);
+        var user = await getUserByEmail(dto.Email);
 
         if (user is null)
         {
@@ -99,11 +100,11 @@ public class AuthService : IAuthService
         return tokenHandler.WriteToken(token);
     }
 
-    public UserDto Account(Guid id)
+    public async Task<UserDto> Account(Guid id)
     {
-        var user = _context
+        var user = await _context
             .Users
-            .FirstOrDefault(u => u.Id == id);
+            .FirstOrDefaultAsync(u => u.Id == id);
 
         if (user is null)
         {
@@ -115,11 +116,11 @@ public class AuthService : IAuthService
         return result;
     }
 
-    private User getUserByEmail(string email)
+    private async Task<User> getUserByEmail(string email)
     {
-        var user = _context
+        var user = await _context
             .Users
-            .FirstOrDefault(u => u.Email == email);
+            .FirstOrDefaultAsync(u => u.Email == email);
 
         if (user is null) return null;
         return user;
