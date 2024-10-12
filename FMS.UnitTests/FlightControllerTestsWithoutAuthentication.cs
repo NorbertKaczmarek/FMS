@@ -75,7 +75,7 @@ public class FlightControllerTestsWithoutAuthentication : IClassFixture<WebAppli
     public async Task Delete_Flight_ReturnsUnauthorized()
     {
         // act
-        var response = await _client.DeleteAsync("/api/flight/1");
+        var response = await _client.DeleteAsync("/api/flight/9a5341e0-884c-4037-9ca8-98fa9648ba05");
 
         //assert
         response.StatusCode.Should().Be(System.Net.HttpStatusCode.Unauthorized);
@@ -88,7 +88,7 @@ public class FlightControllerTestsWithoutAuthentication : IClassFixture<WebAppli
         int numerLotu, string dataWylotuString, string miejsceWylotu, string miejscePrzylotu, PlaneType typSamolotu)
     {
         // arrange
-        var model = new FlightCreateDto()
+        var flight = new Flight()
         {
             NumerLotu = numerLotu,
             DataWylotu = DateTime.ParseExact(dataWylotuString, "dd.MM.yyyy HH:mm", System.Globalization.CultureInfo.InvariantCulture),
@@ -97,10 +97,13 @@ public class FlightControllerTestsWithoutAuthentication : IClassFixture<WebAppli
             TypSamolotu = typSamolotu
         };
 
-        var httpContent = model.ToJsonHttpContent();
+        var httpContent = flight.ToJsonHttpContent();
+
+        // seed
+        SeedFlight(flight);
 
         // act
-        var response = await _client.PostAsync("/api/flight/1", httpContent);
+        var response = await _client.PostAsync($"/api/flight/{flight.Id}", httpContent);
 
         //assert
         response.StatusCode.Should().Be(System.Net.HttpStatusCode.Unauthorized);

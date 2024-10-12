@@ -36,7 +36,7 @@ public class FlightController : ControllerBase
     /// <summary>
     /// Zwraca konkretny lot na podstawie jego id.
     /// </summary>
-    [HttpGet("{id}")]
+    [HttpGet("{id:Guid}")]
     [AllowAnonymous]
     public async Task<ActionResult<FlightDto>> GetById([FromRoute] Guid id)
     {
@@ -74,8 +74,7 @@ public class FlightController : ControllerBase
     /// <summary>
     /// Pozwala modyfikować utworzony wcześniej lot na podstawie jego id.
     /// </summary>
-    [Authorize]
-    [HttpPost("{id}")]
+    [HttpPost("{id:Guid}")]
     public async Task<ActionResult> Update([FromRoute] Guid id, [FromBody] FlightEditDto dto)
     {
         await _flightService.Update(id, dto);
@@ -85,8 +84,7 @@ public class FlightController : ControllerBase
     /// <summary>
     /// Pozwala usunąć lot na podstawie jego id.
     /// </summary>
-    [Authorize]
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:Guid}")]
     public async Task<ActionResult> Delete([FromRoute] Guid id)
     {
         await _flightService.DeleteAsync(id);
